@@ -2,7 +2,7 @@
 
 Welcome to Girly DevOps Deployments! This is my little corner where I share DevOps projects with a girly touch ✨. It’s a mix of cheat sheets, deployments, scripts, and database setups, all using tools like Terraform, Ansible, Kubernetes, and Docker. The goal? Making DevOps practical, accessible, and showing you my progress in my learning !
 
-## Why This Repository? 🌼
+## Why this repository? 🌼
 
 Each folder in this repo has something useful to help you navigate DevOps more easily:
 
@@ -11,7 +11,7 @@ Each folder in this repo has something useful to help you navigate DevOps more e
 📂 **deployments**– Diverse deployment strategies and automation examples.
 📂 **scripts** – Useful scripts to simplify your workflow.
 
-## Explore and Learn 🌷
+## Explore and learn 🌷
 
 Here’s some examples of what you’ll find inside:
 
@@ -20,14 +20,14 @@ Here’s some examples of what you’ll find inside:
 - **Ansible** – Automate server setup and configuration.
 - **Kubernetes & Docker** – Dive into containerization and orchestration: micro-services, helm..
 
-## Getting Involved 🌻
+## Getting involved 🌻
 
 Whether you're new to DevOps or looking to expand your knowledge, this repository offers resources to enhance your skills. You're encouraged to:
 - ✅ Clone the repository to try out the projects.
 - ✅ Contribute by submitting pull requests or suggesting new features.
 - ✅ Share feedback or ask questions (not too much 😌 !) by opening issues.
 
-## Stay Connected 🌹
+## Stay connected 🌹
 
 Connect with me on [LinkedIn](https://www.linkedin.com/in/oaman) to stay updated on my latest projects and adventures in the world of DevOps, Cloud and Cybersecurity.
 
