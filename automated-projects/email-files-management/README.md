@@ -50,7 +50,7 @@ This will create:
 - An IAM role with proper permissions
 - An AWS Lambda function that processes files automatically
 
-### 3️⃣ Upload a File & Let Lambda Handle It   
+### 3️⃣ Upload a file & let lambda handle it   
 
 Upload a file to the S3 bucket and watch it:
 ✔ Be renamed and categorized automatically
