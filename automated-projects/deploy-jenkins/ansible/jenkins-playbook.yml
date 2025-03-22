@@ -1,5 +1,5 @@
 - name: Configure EC2 instance (Jenkins + Nginx)
-  hosts: jenkins
+  hosts: deploy-jenkins
   become: true
   tasks: 
     - name: Update apt package
@@ -27,23 +27,23 @@
 
     - name: Add Jenkins repository
       ansible.builtin.apt_repository:
-        repo: "deb https://pkg.jenkins.io/debian binary/"
+        repo: "deb https://pkg.deploy-jenkins.io/debian binary/"
         state: present
     
     - name: Install Jenkins
       ansible.builtin.apt:
-        name: jenkins
+        name: deploy-jenkins
         state: present
         update_cache: yes
     
     - name: Start Jenkins as a service
       ansible.builtin.systemd:
-        name: jenkins
+        name: deploy-jenkins
         state: started
 
-    - name: Enable jenkins to start at boot
+    - name: Enable deploy-jenkins to start at boot
       ansible.builtin.systemd:
-        name: jenkins
+        name: deploy-jenkins
         enabled: true
     
     - name: Install Nginx
@@ -55,7 +55,7 @@
     - name: Configure Nginx as a reverse proxy for Jenkins
       ansible.builtin.template:
         src: nginx.conf.j2
-        dest: /etc/nginx/sites-available/jenkins
+        dest: /etc/nginx/sites-available/deploy-jenkins
         owner: root
         group: root
         mode: 0644
@@ -63,8 +63,8 @@
     - name: Link nginx config
       ansible.builtin.file:
         state: link
-        src: '/etc/nginx/sites-available/jenkins'
-        path: '/etc/nginx/sites-enabled/jenkins'
+        src: '/etc/nginx/sites-available/deploy-jenkins'
+        path: '/etc/nginx/sites-enabled/deploy-jenkins'
 
     - name: Remove default config
       ansible.builtin.file:
@@ -92,7 +92,7 @@
         - reload nginx
     
     - name: read admin pwd
-      shell: cat /var/lib/jenkins/secrets/initialAdminPassword
+      shell: cat /var/lib/deploy-jenkins/secrets/initialAdminPassword
       register: adminpwd
 
   handlers:

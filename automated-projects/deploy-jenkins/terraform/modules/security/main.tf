@@ -1,5 +1,5 @@
 # ===================================
-# Author: @aglorhythm / jenkins.cloud ✿
+# Author: @aglorhythm / deploy-jenkins.cloud ✿
 # Description: This module will handle security groups and their rules.
 # ===================================
 

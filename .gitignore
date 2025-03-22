@@ -1,2 +1,8 @@
 # env files
-.env 
+.env
+
+# Pycharm
+.idea
+
+# folders
+private
