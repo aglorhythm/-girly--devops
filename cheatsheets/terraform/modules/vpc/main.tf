@@ -29,7 +29,7 @@ resource "aws_subnet" "public_subnet" {
   }
 }
 
-# Private - Create 3 subnets for availability zones a / b /c
+# private - Create 3 subnets for availability zones a / b /c
 resource "aws_subnet" "private_subnet" {
   count             = length(var.azs)
   vpc_id            = aws_vpc.my_aws_vpc.id

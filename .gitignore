@@ -1,5 +1,12 @@
 # env files
 .env
+venv
 
 # Pycharm
 .idea
+
+# folders
+private
+
+# self notes
+journaling.md
