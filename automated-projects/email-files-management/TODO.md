@@ -42,3 +42,5 @@
 📌 **[ ]** Not started  
 📌 **[/]** In progress  
 📌 **[✔]** Done  
+
+**This `TODO.md` is designed to be public and showcase my ability to manage cloud projects efficiently.** 🚀 
