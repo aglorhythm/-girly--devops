@@ -6,6 +6,7 @@
 
 from dotenv import load_dotenv
 import os
+import subprocess
 import boto3
 
 load_dotenv()
@@ -25,8 +26,8 @@ def get_temporary_creds():
 def set_terraform_aws_config(access_key: str, secret_key: str, session_token: str) -> None:
     os.environ["TF_VAR_aws_access_key_id"] = access_key
     os.environ["TF_VAR_aws_secret_access_key"] = secret_key
-    os.environ["TF_VAR_token"] = secret_key = session_token
-    os.environ["TF_VAR_aws_default_region"] = os.getenv("AWS_DEFAULT_REGION")
+    os.environ["TF_VAR_aws_session_token"] = session_token
+    os.environ["TF_VAR_aws_region"] = os.getenv("AWS_DEFAULT_REGION")
 
 
 new_creds = get_temporary_creds()
@@ -35,3 +36,8 @@ set_terraform_aws_config(
     secret_key=new_creds["secret_key"],
     session_token=new_creds["session_token"]
 )
+
+# run terraform
+terraform_dir = "../terraform"
+subprocess.run(["tofu", "init", "-auto-approve"], cwd=terraform_dir, env=os.environ)
+subprocess.run(["tofu", "plan", "-auto-approve"], cwd=terraform_dir, env=os.environ)
