@@ -3,5 +3,5 @@
 # Backend configs
 # ===================================
 
-bucket = "aglorhythm-business-files"
+bucket = "tf-efm-backend"
 prefix = "terraform/state"
