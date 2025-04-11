@@ -23,21 +23,30 @@ def get_temporary_creds():
     }
     return creds
 
-def set_terraform_aws_config(access_key: str, secret_key: str, session_token: str) -> None:
-    os.environ["TF_VAR_aws_access_key_id"] = access_key
-    os.environ["TF_VAR_aws_secret_access_key"] = secret_key
-    os.environ["TF_VAR_aws_session_token"] = session_token
-    os.environ["TF_VAR_aws_region"] = os.getenv("AWS_DEFAULT_REGION")
 
+if __name__ == '__main__':
 
-new_creds = get_temporary_creds()
-set_terraform_aws_config(
-    access_key=new_creds["access_key"],
-    secret_key=new_creds["secret_key"],
-    session_token=new_creds["session_token"]
+    new_creds = get_temporary_creds()
+    env = {
+        "TF_VAR_aws_access_key_id": new_creds["access_key"],
+        "TF_VAR_aws_secret_access_key": new_creds["secret_key"],
+        "TF_VAR_aws_session_token": new_creds["session_token"],
+        "TF_VAR_aws_region": os.getenv("AWS_DEFAULT_REGION"),
+        "TF_VAR_environment": os.getenv("ENV")
+    }
+
+    # run terraform
+    terraform_dir = "../terraform"
+    subprocess.run(
+        ["tofu", "init"],
+        cwd=terraform_dir,
+        env={**os.environ, **env}
+    )
+
+    subprocess.run(
+        ["tofu", "plan"],
+        cwd=terraform_dir,
+        env={**os.environ, **env}
 )
 
-# run terraform
-terraform_dir = "../terraform"
-subprocess.run(["tofu", "init", "-auto-approve"], cwd=terraform_dir, env=os.environ)
-subprocess.run(["tofu", "plan", "-auto-approve"], cwd=terraform_dir, env=os.environ)
+
