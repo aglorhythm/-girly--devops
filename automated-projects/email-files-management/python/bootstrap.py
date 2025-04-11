@@ -7,6 +7,8 @@
 from dotenv import load_dotenv
 import os
 import subprocess
+from pathlib import Path
+
 import boto3
 
 load_dotenv()
@@ -26,27 +28,42 @@ def get_temporary_creds():
 
 if __name__ == '__main__':
 
-    new_creds = get_temporary_creds()
-    env = {
-        "TF_VAR_aws_access_key_id": new_creds["access_key"],
-        "TF_VAR_aws_secret_access_key": new_creds["secret_key"],
-        "TF_VAR_aws_session_token": new_creds["session_token"],
-        "TF_VAR_aws_region": os.getenv("AWS_DEFAULT_REGION"),
-        "TF_VAR_environment": os.getenv("ENV")
-    }
+    try:
+        new_creds = get_temporary_creds()
+        env = {
+            "TF_VAR_aws_access_key_id": new_creds["access_key"],
+            "TF_VAR_aws_secret_access_key": new_creds["secret_key"],
+            "TF_VAR_aws_session_token": new_creds["session_token"],
+            "TF_VAR_aws_region": os.getenv("AWS_DEFAULT_REGION"),
+            "TF_VAR_environment": os.getenv("ENV")
+        }
 
-    # run terraform
-    terraform_dir = "../terraform"
-    subprocess.run(
-        ["tofu", "init"],
-        cwd=terraform_dir,
-        env={**os.environ, **env}
-    )
+        # run terraform
+        tf_dir = "../terraform"
+        tf_plan = "tf-plan"
 
-    subprocess.run(
-        ["tofu", "plan"],
-        cwd=terraform_dir,
-        env={**os.environ, **env}
-)
+        subprocess.run(
+            ["tofu", "init"],
+            cwd=tf_dir,
+            env={**os.environ, **env}
+        )
+        subprocess.run(
+            ["tofu", "plan", f"-out={tf_plan}"],
+            cwd=tf_dir,
+            env={**os.environ, **env}
+        )
+
+        plan_path = Path(f"{tf_dir}/{tf_plan}")
+        if plan_path.is_file():
+            subprocess.run(
+                ["tofu", "apply", tf_plan],
+                cwd=tf_dir,
+                env={**os.environ, **env}
+            )
+        else:
+            print("Plan  file can't be found.")
+
+    except Exception as err:
+        print(err)
 
 
