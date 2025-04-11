@@ -6,7 +6,12 @@ variable "environment" {
 }
 
 # buckets
-variable "business_buckets"{
-  description = "List of business buckets"
+variable "business_folders" {
+  description = "Folders list for business folders"
   type        = list(string)
+}
+
+variable "business_bucket" {
+  description = "Bucket list for business folders"
+  type        = string
 }
