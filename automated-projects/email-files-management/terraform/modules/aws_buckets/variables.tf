@@ -1,3 +1,7 @@
+# ===================================
+# Author: @aglorhythm
+# Description: Variables for bucket module
+# ===================================
 
 # environment
 variable "environment" {
