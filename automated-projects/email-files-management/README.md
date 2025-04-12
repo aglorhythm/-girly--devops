@@ -10,6 +10,10 @@ It helps **busy entrepreneurs** by automatically:
 
 Let's end **manual uploads, lost files, or messy storage!** 🚀  
 
+## Schema
+
+![Schema](202504_schema_efm_cloud-devops.png)
+
 ---
 
 ## ✨ Features  
