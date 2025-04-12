@@ -1,6 +1,6 @@
 # ===================================
 # Author: @aglorhythm
-# Providers script
+# Description: Providers script
 # ===================================
 
 terraform {
