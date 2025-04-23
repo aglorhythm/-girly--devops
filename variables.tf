@@ -25,7 +25,7 @@ variable "business_bucket" {
   type        = string
 }
 
-variable "business_email"{
+variable "business_domain"{
   description = "Business email"
   type        = string
 }

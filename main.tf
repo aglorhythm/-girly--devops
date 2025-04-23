@@ -20,16 +20,18 @@ module "buckets_efm" {
 # ===================================
 
 module "ses_efm" {
-  depends_on        = [module.lambda_efm]
-  source            = "./modules/aws_email"
-  environment       = var.environment
-  business_email    = var.business_email
-  aws_region        = var.aws_region
-  trigger_emails    = var.trigger_emails
-  lambda_function   = "PythonEfmStoreFile"
-  rule_set          = "efm-rule-set"
-  rule_trigger_name = "store-files"
-  tls_policy        = "Optional"
+  depends_on                = [module.lambda_efm]
+  source                    = "./modules/aws_email"
+  environment               = var.environment
+  business_domain            = var.business_domain
+  aws_region                = var.aws_region
+  trigger_emails            = var.trigger_emails
+  lambda_function           = "PythonEfmStoreFile"
+  rule_set                  = "efm-rule-set"
+  rule_trigger_name         = "store-files"
+  trigger_tls_policy        = "Optional"
+  lambda_invocation_type    = "Event"
+  lambda_position           = 0
 }
 
 # ===================================
@@ -53,6 +55,9 @@ module "lambda_efm" {
   environment           = var.environment
   python_script_folder  = var.python_script_folder
   role_arn              = module.iam_efm.role_arn
+  lambda_source_file    = "${path.module}/../python/store_files.py"
+  lambda_output_path    = "efm"
+  runtime               = "python3.11"
 }
 
 
