@@ -1,6 +1,6 @@
 # ===================================
 # Author: @aglorhythm
-# Variables
+# Description: Variables for lambda module
 # ===================================
 
 
@@ -14,17 +14,13 @@ variable "environment" {
   type        = string
 }
 
-variable "business_email" {
-  description = "Bucket list for business folders"
-  type        = string
+variable "python_script_folder"{
+  description = "Python script folder"
+   type        = string
 }
 
-# ============
-# PROVIDERS
-# ===========
-
-# === AWS
-variable "aws_region"{
-  description = "AWS Region"
-  type        = string
+variable "role_arn" {
+  description = "Role arn to associate with the lambda function"
+   type        = string
 }
+

@@ -1,48 +1,32 @@
 # ===================================
 # Author: @aglorhythm
-# Creates SES service
+# Description: Creates Lambda function
 # ===================================
 
 data "aws_caller_identity" "current" {}
 
-# add domain identity
-resource "aws_ses_domain_identity" "efm" {
-  domain = var.business_email
+
+
+# archive func
+data "archive_file" "lambda"{
+  type  = "zip"
+  source_file = "${path.module}/${var.python_script_folder}/store_files.py"
+  output_path = "lambda_func_src.zip"
 }
 
-# trust
-resource "aws_ses_domain_dkim" "dev_dkim" {
-  domain = aws_ses_domain_identity.domain.domain
-}
+resource "aws_lambda_function" "lambda" {
+  filename      = "lambda_func_src.zip"
+  function_name = "${var.environment}_python_efm_store_files"
+  role          = var.role_arn
 
-# rules
-resource "aws_ses_receipt_rule_set" "dev_efm_main" {
-  rule_set_name = "${var.environment}-efm-rule-set"
-}
+  source_code_hash = data.archive_file.lambda.output_base64sha256
 
-# SES rule
-resource "aws_ses_receipt_rule" "dev_trigger_lambda" {
-  name          = "store-files"
-  rule_set_name = aws_ses_receipt_rule_set.dev_efm_main.rule_set_name
-  recipients    = ["help@famousinvogue.com"]
-  enabled       = true
-  scan_enabled  = true
-  tls_policy    = "Optional"
+  runtime = "python3.11"
+  handler = "lambda_handler"
 
-  lambda_action {
-      function_arn = aws_lambda_function.email_handler.arn
-      invocation_type = "Event"
-      position = 0
-  }
-
-  depends_on = [aws_lambda_permission.allow_ses]
-}
-
-# Lambda permission
-resource "aws_lambda_permission" "dev_allow_ses" {
-  statement_id  = "AllowExecutionFromSES"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.email_handler.function_name
-  principal     = "ses.amazonaws.com"
-  source_arn    = "arn:aws:ses:${var.aws_region}:${data.aws_caller_identity.current.account_id}:receipt-rule/fiv-rule-set"
+  # environment {
+  #   variables = {
+  #     foo = "toedit"
+  #   }
+  # }
 }
