@@ -1,6 +1,6 @@
 # ===================================
 # Author: @aglorhythm
-# Variables
+# Description: Variables for main script
 # ===================================
 
 
@@ -15,10 +15,31 @@ variable "environment" {
 }
 
 # buckets
-variable "business_buckets" {
-  description = "Bucket list for business folders"
+variable "business_folders" {
+  description = "Folders list for business folders"
   type        = list(string)
 }
+
+variable "business_bucket" {
+  description = "Bucket list for business folders"
+  type        = string
+}
+
+variable "business_email"{
+  description = "Business email"
+  type        = string
+}
+
+variable "trigger_emails"{
+  description = "Trigger emails list"
+   type        = list(string)
+}
+
+variable "python_script_folder"{
+  description = "Python script folder"
+   type        = string
+}
+
 
 # ============
 # PROVIDERS
@@ -44,3 +65,4 @@ variable "aws_session_token"{
   description = "AWS Token"
   type        = string
 }
+
