@@ -1,48 +1,53 @@
 # ===================================
 # Author: @aglorhythm
-# Create AWS bucket and folders
+# Description: Creates SES service
 # ===================================
 
+data "aws_caller_identity" "current" {}
 
-# creates main bucket
-resource "aws_s3_bucket" "dev_business_bucket" {
-  bucket = "${var.environment}-${var.business_bucket}"
-
-  tags   = {
-    Name  = var.business_bucket
-    Environment = var.environment
-  }
+data "aws_lambda_function" "lambda" {
+  function_name = "${var.environment}${var.lambda_function}"
 }
 
-# adds ACL
-resource "aws_s3_bucket_ownership_controls" "dev_business_bucket_acl" {
-  depends_on = [aws_s3_bucket.dev_business_bucket]
-
-  bucket = aws_s3_bucket.dev_business_bucket.id
-  rule {
-    object_ownership = "BucketOwnerPreferred"
-  }
+# add domain identity
+resource "aws_ses_domain_identity" "efm" {
+  domain = var.business_domain
 }
 
-
-# set up privacy
-resource "aws_s3_bucket_acl" "dev_private_acl" {
-  depends_on = [aws_s3_bucket_ownership_controls.dev_business_bucket_acl]
-
-  bucket = aws_s3_bucket.dev_business_bucket.id
-  acl    = "private"
+# enable trust with dkim
+resource "aws_ses_domain_dkim" "dkim" {
+  domain = aws_ses_domain_identity.efm.domain
 }
 
-# create objects
-resource "aws_s3_object" "dev_business_bucket_obj" {
-  depends_on = [aws_s3_bucket.dev_business_bucket]
+# receipt rules set
 
-  count  = length(var.business_folders)
-  bucket = "${var.environment}-${var.business_bucket}"
-  key    = "${var.business_folders[count.index]}/readme.txt"
+resource "aws_ses_receipt_rule_set" "efm_main" {
+  rule_set_name = "${var.environment}-${var.rule_set}"
+}
 
-  tags   = {
-    Name  = var.business_folders[count.index]
-    Environment = var.environment
+# trigger lambda when email is received by specific recipient
+resource "aws_ses_receipt_rule" "trigger" {
+  name          = "${var.environment}-${var.rule_trigger_name}"
+  rule_set_name = aws_ses_receipt_rule_set.efm_main.rule_set_name
+  recipients    = var.trigger_emails
+  enabled       = true
+  scan_enabled  = true
+  tls_policy    = var.trigger_tls_policy
+
+  lambda_action {
+      function_arn    = data.aws_lambda_function.lambda.arn
+      invocation_type = var.lambda_invocation_type
+      position        = var.lambda_position
   }
+
+  depends_on = [aws_lambda_permission.allow_ses]
+}
+
+# Lambda permission
+resource "aws_lambda_permission" "allow_ses" {
+  statement_id  = "AllowExecutionFromSES"
+  action        = "lambda:InvokeFunction"
+  function_name = data.aws_lambda_function.lambda.function_name
+  principal     = "ses.amazonaws.com"
+  source_arn    = "arn:aws:ses:${var.aws_region}:${data.aws_caller_identity.current.account_id}:receipt-rule/${aws_ses_receipt_rule_set.efm_main.rule_set_name}"
 }
