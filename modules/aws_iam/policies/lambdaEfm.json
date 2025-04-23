@@ -1,0 +1,7 @@
+{
+  "Effect": "Allow",
+  "Action": [
+    "iam:CreateRole"
+  ],
+  "Resource": "arn:aws:iam::897729115142:role/dev_efm_lambda"
+}
