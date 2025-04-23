@@ -21,6 +21,21 @@ variable "python_script_folder"{
 
 variable "role_arn" {
   description = "Role arn to associate with the lambda function"
-   type        = string
+  type        = string
+}
+
+variable "lambda_source_file" {
+  description = "Lambda source path for script to use"
+  type        = string
+}
+
+variable "lambda_output_path" {
+  description = "Lambda output path"
+  type        = string
+}
+
+variable "runtime" {
+  description = "Lambda runtime"
+  type        = string
 }
 
