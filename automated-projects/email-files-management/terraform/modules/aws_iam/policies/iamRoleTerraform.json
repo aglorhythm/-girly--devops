@@ -1,0 +1,78 @@
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Sid": "CreateRoleForEfm",
+			"Effect": "Allow",
+			"Action": [
+				"iam:CreateRole",
+				"iam:DeleteRole",
+				"iam:PutRolePolicy",
+				"iam:AttachRolePolicy",
+				"iam:DetachRolePolicy",
+				"iam:PassRole",
+				"iam:GetRole",
+				"iam:ListRolePolicies",
+				"iam:ListAttachedRolePolicies",
+				"iam:ListInstanceProfilesForRole",
+				"lambda:CreateFunction",
+				"iam:GetRole",
+				"iam:CreatePolicy"
+			],
+			"Resource": [
+				"arn:aws:iam::${account_id}:role/${role_name}"
+			]
+		},
+		{
+			"Sid": "AllowIAMPolicyCreation",
+			"Effect": "Allow",
+			"Action": [
+				"iam:CreatePolicy",
+				"iam:GetPolicy",
+				"iam:GetPolicyVersion",
+				"iam:ListPolicyVersions",
+				"iam:DeletePolicy",
+				"iam:CreatePolicyVersion"
+			],
+			"Resource": "arn:aws:iam::${account_id}:policy/${policy_name}"
+		},
+		{
+			"Sid": "CreateFuncForEfm",
+			"Effect": "Allow",
+			"Action": [
+				"lambda:CreateFunction",
+				"lambda:GetFunction",
+				"lambda:ListVersionsByFunction",
+				"lambda:GetFunctionCodeSigningConfig",
+				"lambda:DeleteFunction",
+				"lambda:AddPermission",
+				"lambda:GetPolicy",
+				"lambda:RemovePermission",
+				"lambda:UpdateFunctionConfiguration",
+				"lambda:UpdateFunctionCode"
+			],
+			"Resource": [
+				"arn:aws:lambda:*:${account_id}:function:$func_name}"
+			]
+		},
+		{
+			"Sid": "AllowSESManagement",
+			"Effect": "Allow",
+			"Action": [
+				"ses:CreateReceiptRuleSet",
+				"ses:DeleteReceiptRuleSet",
+				"ses:SetActiveReceiptRuleSet",
+				"ses:CreateReceiptRule",
+				"ses:DeleteReceiptRule",
+				"ses:UpdateReceiptRule",
+				"ses:DescribeReceiptRuleSet",
+				"ses:VerifyDomainIdentity",
+				"ses:VerifyDomainDkim",
+				"ses:GetIdentityVerificationAttributes",
+				"ses:GetIdentityDkimAttributes",
+				"ses:DeleteIdentity"
+			],
+			"Resource": "*"
+		}
+	]
+}
