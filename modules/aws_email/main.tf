@@ -27,6 +27,10 @@ resource "aws_ses_receipt_rule_set" "efm_main" {
 
 # trigger lambda when email is received by specific recipient
 resource "aws_ses_receipt_rule" "trigger" {
+  depends_on = [
+    aws_lambda_permission.allow_ses,
+    aws_ses_receipt_rule_set.efm_main
+  ]
   name          = "${var.environment}-${var.rule_trigger_name}"
   rule_set_name = aws_ses_receipt_rule_set.efm_main.rule_set_name
   recipients    = var.trigger_emails
@@ -39,8 +43,6 @@ resource "aws_ses_receipt_rule" "trigger" {
       invocation_type = var.lambda_invocation_type
       position        = var.lambda_position
   }
-
-  depends_on = [aws_lambda_permission.allow_ses]
 }
 
 # Lambda permission
@@ -49,5 +51,5 @@ resource "aws_lambda_permission" "allow_ses" {
   action        = "lambda:InvokeFunction"
   function_name = data.aws_lambda_function.lambda.function_name
   principal     = "ses.amazonaws.com"
-  source_arn    = "arn:aws:ses:${var.aws_region}:${data.aws_caller_identity.current.account_id}:receipt-rule/${aws_ses_receipt_rule_set.efm_main.rule_set_name}"
+  source_arn    = "arn:aws:ses:${var.aws_region}:${data.aws_caller_identity.current.account_id}:rule-set/${aws_ses_receipt_rule_set.efm_main.rule_set_name}"
 }

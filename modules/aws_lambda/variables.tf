@@ -39,3 +39,16 @@ variable "runtime" {
   type        = string
 }
 
+variable "function_name"{
+  description = "AWS Token"
+  type        = string
+}
+
+variable "handler_location"{
+  description = "Handle path"
+  type        = string
+}
+
+
+
+

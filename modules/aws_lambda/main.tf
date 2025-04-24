@@ -17,13 +17,13 @@ data "archive_file" "lambda"{
 
 resource "aws_lambda_function" "lambda" {
   filename      = "${var.environment}_lambda_func_src_${var.lambda_output_path}.zip"
-  function_name = "${var.environment}PythonEfmStoreFile"
+  function_name =  var.function_name
   role          = var.role_arn
 
   source_code_hash = data.archive_file.lambda.output_base64sha256
 
   runtime = var.runtime
-  handler = "lambda_handler"
+  handler = "${var.handler_location}.lambda_handler"
 
   # environment {
   #   variables = {

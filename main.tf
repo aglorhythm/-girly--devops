@@ -20,7 +20,7 @@ module "buckets_efm" {
 # ===================================
 
 module "ses_efm" {
-  depends_on                = [module.lambda_efm]
+  depends_on                = [module.iam_efm, module.lambda_efm]
   source                    = "./modules/aws_email"
   environment               = var.environment
   business_domain            = var.business_domain
@@ -51,6 +51,7 @@ module "iam_efm" {
 # ===================================
 
 module "lambda_efm" {
+  depends_on            = [module.iam_efm]
   source                = "./modules/aws_lambda"
   environment           = var.environment
   python_script_folder  = var.python_script_folder
@@ -58,8 +59,8 @@ module "lambda_efm" {
   lambda_source_file    = "${path.module}/../python/store_files.py"
   lambda_output_path    = "efm"
   runtime               = "python3.11"
+  function_name         = "${var.environment}PythonEfmStoreFile"
+  handler_location       = "store_files"
 }
-
-
 
 
