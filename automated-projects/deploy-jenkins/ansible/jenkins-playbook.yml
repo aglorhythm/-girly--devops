@@ -1,0 +1,102 @@
+- name: Configure EC2 instance (Jenkins + Nginx)
+  hosts: deploy-jenkins
+  become: true
+  tasks: 
+    - name: Update apt package
+      ansible.builtin.apt:
+        upgrade: yes
+        update_cache: yes
+        cache_valid_time: 86400 # 1 day
+    
+    - name: Install Java
+      ansible.builtin.apt:
+        name: openjdk-17-jdk
+        state: present
+        update_cache: yes
+
+    - name: Install gpg
+      ansible.builtin.apt:
+        name: gpg
+        state: present
+        update_cache: yes
+
+    - name: Add Jenkins repository key
+      ansible.builtin.apt_key:
+        url: https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+        state: present
+
+    - name: Add Jenkins repository
+      ansible.builtin.apt_repository:
+        repo: "deb https://pkg.deploy-jenkins.io/debian binary/"
+        state: present
+    
+    - name: Install Jenkins
+      ansible.builtin.apt:
+        name: deploy-jenkins
+        state: present
+        update_cache: yes
+    
+    - name: Start Jenkins as a service
+      ansible.builtin.systemd:
+        name: deploy-jenkins
+        state: started
+
+    - name: Enable deploy-jenkins to start at boot
+      ansible.builtin.systemd:
+        name: deploy-jenkins
+        enabled: true
+    
+    - name: Install Nginx
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+        
+    
+    - name: Configure Nginx as a reverse proxy for Jenkins
+      ansible.builtin.template:
+        src: nginx.conf.j2
+        dest: /etc/nginx/sites-available/deploy-jenkins
+        owner: root
+        group: root
+        mode: 0644
+    
+    - name: Link nginx config
+      ansible.builtin.file:
+        state: link
+        src: '/etc/nginx/sites-available/deploy-jenkins'
+        path: '/etc/nginx/sites-enabled/deploy-jenkins'
+
+    - name: Remove default config
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - /etc/nginx/sites-available/default
+        - /etc/nginx/sites-enabled/default
+      notify:
+        - reload nginx
+    
+    - name: Install Certbot and its Nginx plugin
+      ansible.builtin.apt:
+        name:
+          - certbot
+          - python3-certbot-nginx
+        state: present
+
+    - name: Get SSL certificate using Certbot
+      ansible.builtin.command: >
+        certbot --nginx -d {{ jenkins_domain }} --non-interactive --agree-tos --email {{ certbot_email }}
+      args:
+        creates: /etc/letsencrypt/live/{{ jenkins_domain }}/fullchain.pem
+      notify:
+        - reload nginx
+    
+    - name: read admin pwd
+      shell: cat /var/lib/deploy-jenkins/secrets/initialAdminPassword
+      register: adminpwd
+
+  handlers:
+    - name: reload nginx
+      ansible.builtin.service:
+        name: nginx
+        state: reloaded
