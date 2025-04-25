@@ -35,11 +35,6 @@ variable "trigger_emails"{
    type        = list(string)
 }
 
-variable "python_script_folder"{
-  description = "Python script folder"
-   type        = string
-}
-
 
 # ============
 # PROVIDERS
@@ -66,6 +61,21 @@ variable "aws_session_token"{
   type        = string
 }
 
+# === OVH
+variable "ovh_app_secret"{
+  description = "OVH application secret"
+  type        = string
+}
+
+variable "ovh_app_key"{
+  description = "OVH application key"
+  type        = string
+}
+
+variable "ovh_consumer_key"{
+  description = "OVH consumer key"
+  type        = string
+}
 
 
 

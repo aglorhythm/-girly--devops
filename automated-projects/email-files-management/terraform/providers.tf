@@ -7,8 +7,14 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.81"
+      version = "~> 5.84"
     }
+
+    ovh = {
+      source  = "ovh/ovh"
+      version = "~> 1.1"
+    }
+
   }
 }
 
@@ -19,4 +25,11 @@ provider "aws" {
   access_key = var.aws_access_key_id
   secret_key = var.aws_secret_access_key
   token = var.aws_session_token
+}
+
+provider "ovh" {
+  endpoint           = "ovh-eu"
+  application_key    = var.ovh_app_key
+  application_secret = var.ovh_app_secret
+  consumer_key       = var.ovh_consumer_key
 }
