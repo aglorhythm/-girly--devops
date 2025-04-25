@@ -8,7 +8,7 @@ venv
 # folders
 private
 *.zip
-
+*tf-plan
 # self notes
 journaling.md
 
