@@ -59,6 +59,7 @@ variable "aws_secret_access_key"{
 variable "aws_session_token"{
   description = "AWS Token"
   type        = string
+
 }
 
 # === OVH
@@ -76,7 +77,5 @@ variable "ovh_consumer_key"{
   description = "OVH consumer key"
   type        = string
 }
-
-
 
 
