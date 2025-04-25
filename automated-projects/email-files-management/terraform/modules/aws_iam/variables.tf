@@ -7,12 +7,6 @@
 # COMMON
 # ====
 
-# environment
-variable "environment" {
-  description = "Environment of deployment"
-  type        = string
-}
-
 variable "service_identifier" {
   type = list(string)
 }
@@ -23,6 +17,16 @@ variable "role_name"{
 }
 
 variable "policy_name" {
+    description   = "Policy name"
+    type          = string
+}
+
+variable "policy_tpl" {
+    description   = "Policy name"
+    type          = string
+}
+
+variable "assume_role_policy_tpl" {
     description   = "Policy name"
     type          = string
 }

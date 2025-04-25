@@ -4,37 +4,20 @@
 # ===================================
 data "aws_caller_identity" "current" {}
 
-data "aws_iam_policy_document" "assume_role" {
-  statement {
-    effect = "Allow"
-    principals {
-      type         = "Service"
-      identifiers  = var.service_identifier
-    }
-
-    actions = ["sts:AssumeRole"]
-  }
+# create iam role
+resource "aws_iam_role" "default" {
+  name = var.role_name
+  assume_role_policy = var.assume_role_policy_tpl
 }
 
-resource "aws_iam_role" "role" {
-  name = "${var.environment}${var.role_name}"
-  assume_role_policy = data.aws_iam_policy_document.assume_role.json
+# create iam policy
+resource "aws_iam_policy" "default" {
+  name   = var.policy_name
+  policy = var.policy_tpl
 }
 
-resource "aws_iam_policy" "policy" {
-  name   = "${var.environment}${var.policy_name}"
-  policy = templatefile("${path.module}/policies/lambdaEfm.json", {
-    account_id = data.aws_caller_identity.current.account_id,
-    role_name  = aws_iam_role.role.name
-  })
-}
-
+# attach policy to role
 resource "aws_iam_role_policy_attachment" "lambda_policy_attachment" {
-  role       = aws_iam_role.role.name
-  policy_arn = aws_iam_policy.policy.arn
+  role       = aws_iam_role.default.name
+  policy_arn = aws_iam_policy.default.arn
 }
-
-
-
-
-

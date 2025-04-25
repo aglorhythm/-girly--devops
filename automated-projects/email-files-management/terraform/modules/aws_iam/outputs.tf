@@ -1,11 +1,11 @@
 output "role_arn" {
-  value = aws_iam_role.role.arn
+  value = aws_iam_role.default.arn
 }
 
 output "policy_arn" {
-  value = aws_iam_policy.policy.arn
+  value = aws_iam_policy.default.arn
 }
 
 output "policy_name" {
-  value = aws_iam_policy.policy.name
+  value = aws_iam_policy.default.name
 }
