@@ -19,22 +19,28 @@ variable "business_domain" {
   type        = string
 }
 
-variable "trigger_emails"{
+variable "email_recipients"{
   description = "Business email"
    type        = list(string)
 }
 
-variable "lambda_function" {
+variable "lambda_function_name" {
   description = "Function name"
   type        = string
 }
 
-variable "rule_set" {
+variable "principal" {
+  description = "Principal for Lambda permission"
+  type        = string
+}
+
+
+variable "rule_set_name" {
   description = "Rule set to attach"
   type        = string
 }
 
-variable "rule_trigger_name" {
+variable "rule_name" {
   description = "Rule trigger name"
   type        = string
 }
@@ -44,22 +50,19 @@ variable "trigger_tls_policy" {
   type        = string
 }
 
-variable "lambda_invocation_type" {
+variable "rule_lambda_invocation_type" {
   description = "Lambda invocation type"
   type        = string
 }
 
-variable "lambda_position" {
+variable "rule_lambda_position" {
   description = "Lambda position"
   type        = string
 }
 
-# ============
-# PROVIDERS
-# ===========
 
-# === AWS
-variable "aws_region"{
-  description = "AWS Region"
+variable "aws_region" {
+  description = "AWS region"
   type        = string
 }
+
