@@ -1,0 +1,24 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowLambdaInvoke",
+      "Effect": "Allow",
+      "Action": [
+        "lambda:InvokeFunction"
+      ],
+      "Resource": "arn:aws:lambda:${aws_region}:${account_id}:function:${lambda_function_name}"
+    },
+    {
+      "Sid": "AllowSESPermissions",
+      "Effect": "Allow",
+      "Action": [
+        "ses:DescribeReceiptRule",
+        "ses:DescribeReceiptRuleSet",
+        "ses:GetIdentityMailFromDomainAttributes",
+        "ses:GetIdentityNotificationAttributes"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
