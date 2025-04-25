@@ -45,7 +45,7 @@ if __name__ == '__main__':
         # run terraform
         tf_dir = "../terraform"
         tf_plan = "tf-plan"
-        print('hey:', os.getcwd())
+        # print('hey:', os.getcwd())
 
         subprocess.run(
             ["tofu", "init"],
