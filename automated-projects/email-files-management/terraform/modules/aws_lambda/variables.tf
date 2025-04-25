@@ -14,11 +14,6 @@ variable "environment" {
   type        = string
 }
 
-variable "python_script_folder"{
-  description = "Python script folder"
-   type        = string
-}
-
 variable "role_arn" {
   description = "Role arn to associate with the lambda function"
   type        = string
@@ -39,7 +34,7 @@ variable "runtime" {
   type        = string
 }
 
-variable "function_name"{
+variable "lambda_function_name"{
   description = "AWS Token"
   type        = string
 }

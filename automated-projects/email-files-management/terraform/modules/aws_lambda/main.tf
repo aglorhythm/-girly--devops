@@ -5,8 +5,6 @@
 
 data "aws_caller_identity" "current" {}
 
-
-
 # archive func
 data "archive_file" "lambda"{
   type  = "zip"
@@ -14,10 +12,9 @@ data "archive_file" "lambda"{
   output_path = "${var.environment}_lambda_func_src_${var.lambda_output_path}.zip"
 }
 
-
 resource "aws_lambda_function" "lambda" {
   filename      = "${var.environment}_lambda_func_src_${var.lambda_output_path}.zip"
-  function_name =  var.function_name
+  function_name =  var.lambda_function_name
   role          = var.role_arn
 
   source_code_hash = data.archive_file.lambda.output_base64sha256
