@@ -1,6 +1,7 @@
 # ===================================
 # Author: @aglorhythm
 # Description: Providers script
+# Providers script
 # ===================================
 
 terraform {
@@ -14,7 +15,6 @@ terraform {
       source  = "ovh/ovh"
       version = "~> 1.1"
     }
-
   }
 }
 
