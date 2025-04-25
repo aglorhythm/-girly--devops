@@ -1,6 +1,6 @@
 # ===================================
 # Author: @aglorhythm
-# Variables
+# Description: Variables for main script
 # ===================================
 
 
@@ -25,6 +25,17 @@ variable "business_bucket" {
   type        = string
 }
 
+variable "business_domain"{
+  description = "Business email"
+  type        = string
+}
+
+variable "trigger_emails"{
+  description = "Trigger emails list"
+   type        = list(string)
+}
+
+
 # ============
 # PROVIDERS
 # ===========
@@ -48,4 +59,23 @@ variable "aws_secret_access_key"{
 variable "aws_session_token"{
   description = "AWS Token"
   type        = string
+
 }
+
+# === OVH
+variable "ovh_app_secret"{
+  description = "OVH application secret"
+  type        = string
+}
+
+variable "ovh_app_key"{
+  description = "OVH application key"
+  type        = string
+}
+
+variable "ovh_consumer_key"{
+  description = "OVH consumer key"
+  type        = string
+}
+
+

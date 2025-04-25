@@ -35,18 +35,30 @@ if __name__ == '__main__':
             "TF_VAR_aws_secret_access_key": new_creds["secret_key"],
             "TF_VAR_aws_session_token": new_creds["session_token"],
             "TF_VAR_aws_region": os.getenv("AWS_DEFAULT_REGION"),
-            "TF_VAR_environment": os.getenv("ENV")
+            "TF_VAR_environment": os.getenv("ENV"),
+            "TF_VAR_ovh_app_key": os.getenv("OVH_APP_KEY"),
+            "TF_VAR_ovh_app_secret": os.getenv("OVH_APP_SECRET"),
+            "TF_VAR_ovh_consumer_key": os.getenv("OVH_CONSUMER_KEY"),
+
         }
 
         # run terraform
         tf_dir = "../terraform"
         tf_plan = "tf-plan"
+        # print('hey:', os.getcwd())
 
         subprocess.run(
             ["tofu", "init"],
             cwd=tf_dir,
             env={**os.environ, **env}
         )
+
+        subprocess.run(
+            ["tofu", "refresh"],
+            cwd=tf_dir,
+            env={**os.environ, **env}
+        )
+
         subprocess.run(
             ["tofu", "plan", f"-out={tf_plan}"],
             cwd=tf_dir,
@@ -62,6 +74,12 @@ if __name__ == '__main__':
             )
         else:
             print("Plan  file can't be found.")
+
+        # subprocess.run(
+        #     ["tofu", "destroy"],
+        #     cwd=tf_dir,
+        #     env={**os.environ, **env}
+        # )
 
     except Exception as err:
         print(err)

@@ -1,6 +1,6 @@
 # ===================================
 # Author: @aglorhythm
-# Create AWS bucket and folders
+# Description: Creates AWS bucket and folders
 # ===================================
 
 
