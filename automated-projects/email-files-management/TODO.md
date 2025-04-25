@@ -1,9 +1,9 @@
 # 💖 My to-Do list – Automated file management with AWS ✨  
 
 ## 📌 Phase 1: Core features (MVP – Minimum Viable Product)  
-**[/]** ✔️ Deploy **AWS S3 bucket** with secure access ☁️  
+**[✔]** ✔️ Deploy **AWS S3 bucket** with secure access ☁️  
 **[/]** ✔️ Set up **IAM roles & permissions** 🔐  
-**[/]** ✔️ Create AWS Lambda function to **process uploaded files** ⚡  
+**[✔]** ✔️ Create AWS Lambda function to **process uploaded files** ⚡  
 **[/]** ✔️ Implement **file renaming & categorization** 📂  
 **[/]** ✔️ Automate deployment with **Terraform** 🏗️  
 
@@ -26,8 +26,8 @@
 
 ## 🛠️ Bug fixes & tweaks  
 **[ ]** 🐌 Fix issue where large files take too long to upload  
-**[ ]** 🔐 Ensure IAM permissions are correctly applied (security first! 💖)  
-**[ ]** 🎨 Improve documentation with visuals & examples 📸  
+**[/]** 🔐 Ensure IAM permissions are correctly applied (security first! 💖)  
+**[/]** 🎨 Improve documentation with visuals & examples 📸  
 
 ---
 
